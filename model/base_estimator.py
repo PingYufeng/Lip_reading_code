@@ -48,6 +48,50 @@ class BaseEstimator(object):
 
     
     def evaluate(self, eval_input_fn, steps=None, checkpoint_path=None):
+        '''
+        Args:
+            eval_input_fn: Input fn for Evaluation.
+        
+        Kwargs:
+            steps: Evaluate steps
+            checkpoint_path: Checkpoint to evaluate
+        
+        Returns:
+            Evaluate result: tf.estimator.Estimator.evaluate
+        '''
+        return self.estimator.evaluate(
+            eval_input_fn, steps=steps, checkpoint_path=checkpoint_path)
+    
+
+    def predict(self, predict_input_fn, checkpoint_path=None):
+        '''
+        Args:
+            predict_input_fn: Input fn for Predict.
+        '''
+        predictions = self.estimator.predict(
+            predict_input_fn, checkpoint_path=checkpoint_path)
+        for prediction in predictions:
+            print(prediction)
+    
+
+    def model_fn(self, features, labels, mode, params):
+        '''
+        The model_fn of estimator.
+
+        Args:
+            features: 5-D Tensor. Videos of shape (batch_size, T, H, W, C)
+            labels: 1-D Tensor. Labels of shape (batch_size, )
+            mode: tf.estimator.ModeKeys.<PREDICT/TRAIN/EVAL>
+            params: Dict. Parameters of the estimator (model_parms).
+        
+        Return:
+            tf.estimator.EstimatorSpec
+        '''
+
+        raise NotImplementedError('Model Function not Implemented')
+
+    
+    
 
 
 
