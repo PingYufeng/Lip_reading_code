@@ -102,6 +102,8 @@ class BaseEstimator(object):
         Returns:
             Tuple. (cer, wer)
             Both cer and wer are Tensor of shape (batch_size, )
+        '''
+        
     
 
 
