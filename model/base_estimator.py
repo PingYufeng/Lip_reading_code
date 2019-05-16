@@ -90,8 +90,20 @@ class BaseEstimator(object):
 
         raise NotImplementedError('Model Function not Implemented')
 
+
+    def cal_metircs(self, labels, predictions):
+        '''
+        Calculate cer(character error rate), wer(ward error rate).
+
+        Args:
+            labels: 2-D string SparseTensor. Shape of (batch_size, sentence_length)
+            predictions: 2-D string SparseTensor. Shape of (batch_size, sentence_length)
+        
+        Returns:
+            Tuple. (cer, wer)
+            Both cer and wer are Tensor of shape (batch_size, )
     
-    
+
 
 
 
