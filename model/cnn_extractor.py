@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #================================================================
-#   God Bless You.
 #
 #   file name: cnn_extractor.py
 #   author: Bolun Wu
