@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+from ..utils import char2word
 
 class BaseEstimator(object):
     '''
@@ -103,7 +103,37 @@ class BaseEstimator(object):
             Tuple. (cer, wer)
             Both cer and wer are Tensor of shape (batch_size, )
         '''
+
+        # tf.edit_distance
+        # Computes the Levenshtein distance between sequences
+        cer = tf.edit_distance(predictions, labels) # character error rate
+        wer = tf.edit_distance(char2word(predictions), char2word(labels))
+        max_wer = tf.ones_like(wer)
+
+        # tf.where() condition: wer<1, if true, change to wer, or change to max_wer
+        wer = tf.where(wer<1, wer, max_wer) 
+        return cer, wer
         
+    
+    @staticmethod
+    def get_runConfig(model_dir,
+                      save_checkpoints_steps,
+                      multi_gpu=False,
+                      keep_checkpoint_max=100):
+        sess_config = tf.ConfigProto(
+            allow_soft_placement=True, log_device_placement=False)
+        sess_config.gpu_options.allow_growth = True
+        if multi_gpu:
+            distribution = tf.contrib.distribute.MirroredStrategy()
+        else:
+            distribution = Nune
+
+        return tf.estimator.RunConfig(
+            model_dir=model_dir,
+            save_checkpoints_steps=save_checkpoints_steps,
+            keep_checkpoint_max=keep_checkpoint_max,
+            train_distribute=distribution
+            session_config=sess_config)
     
 
 
