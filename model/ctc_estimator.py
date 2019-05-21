@@ -73,6 +73,9 @@ class CtcEstimator(BaseEstimator):
             logits = tf.transpose(logits, (1, 0, 2)) # (T, batch_size, output_size)
         
         # decode logits
+        batch_size = tf.expand_dims(tf.shape(video)[0], 0) # [batch_size]
+        input_length = tf.expand_dims(tf.shape(video)[1], 0) # [input_length]
+        sequence_length = tf.tile(input_length, batch_size) # [input_length, input_length, ...]
         
             
 
