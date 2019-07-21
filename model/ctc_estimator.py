@@ -76,6 +76,28 @@ class CtcEstimator(BaseEstimator):
         batch_size = tf.expand_dims(tf.shape(video)[0], 0) # [batch_size]
         input_length = tf.expand_dims(tf.shape(video)[1], 0) # [input_length]
         sequence_length = tf.tile(input_length, batch_size) # [input_length, input_length, ...]
+        decoded, log_probs = tf.nn.ctc_beam_search_decoder(
+            logits,
+            sequence_length,
+            beam_width=beam_width,
+            merge_repeated=False)
         
-            
+        predictions = decoded[0]
+
+        predicted_char_list = indices2string(predictions)
+        predicted_string = char_list2string(
+            predicted_char_list) # ['ab', 'abc]
+        
+        if mode == tf.estimator.ModeKeys.PREDICT:
+            predict_output = {
+                'predictions': tf.sparse_tensor_to_dense(predictions, default_value=-1),
+                'predicted_string': predicted_string
+            }
+            export_output = {
+                'prediction': tf.estimator.export.PredictOutput(predict_output)
+            }
+            return tf.estimator.EstimatorSpec(
+                mode=mode,
+                predictions=predict_output,
+                export_outputs=export_output)
 

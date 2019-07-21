@@ -1,5 +1,7 @@
 import tensorflow as tf
+import string
 
+DICT = list(string.ascii_lowercase) + [' ', '_']
 
 def join_string(string_tensor):
     '''
@@ -63,3 +65,23 @@ def char2word(predicted_char_list):
     string = charlist2string(predicted_char_list) # [['ab c']]
     word_list = tf.string_split(string) # [['ab', 'c']]
     return word_list
+
+
+def indices2string(predictions, dic=DICT):
+    '''
+    map int64. to char.
+    e.g.
+        [0, 1, 2] -> ['a', 'b', 'c']
+    
+    Args:
+        predictions: Tensor or SparseTensor. int64 indices to convert.
+    
+    Returns:
+        Map the corresponding values in the DICT.
+    '''
+    if predictions.dtype != tf.int64:
+        predictions = tf.cast(predictions, tf.int64)
+    
+    index2string_table = tf.contrib.lookup.index_to_string_table_from_tensor(
+        dic, default_value='_')
+    return index2string_table.lookup(predictions)
