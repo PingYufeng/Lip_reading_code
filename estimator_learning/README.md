@@ -101,4 +101,12 @@ arguments:
     --gpu               gpu id to use
 ```
 
+### TFRecord
+It's effecient to write your data in TFrecord format and use TFRecordDataset to read it:
+```python
+dataset = tf.data.TFRecordDataset(path_to_data)
+``` 
+See the [oficial docs](https://www.tensorflow.org/tutorials/load_data/tf_records) for an example of how to write your dataset in TFrecord format.<br>
+For practicing, you can download CiFar10 dataset [here](http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz) and uncompress the file. Script for generating TFRecord CiFar10 is in *dataset/cifar10_TFRecord.py*. Just change **CIFAR10_PATH** and run it. Besides, the input function is also defined in it.
+
 
