@@ -46,7 +46,7 @@ There are two types of split.
 
 Pre-splited sets are in `./db-split`
 
-## 7. Create tfrecord
+## 6. (TODO)Create tfrecord
 Create tfrecord using `create_tfrecord.py`. See usage use `python create_tfrecord.py -h`
 An example:
 
