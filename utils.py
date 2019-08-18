@@ -85,3 +85,32 @@ def indices2string(predictions, dic=DICT):
     index2string_table = tf.contrib.lookup.index_to_string_table_from_tensor(
         dic, default_value='_')
     return index2string_table.lookup(predictions)
+
+
+
+def string2char_list(string):
+    """convert a string to char based list. For example:
+    [ 'ab'] -> [ 'a', 'b']
+
+    Args:
+        string: `1-D` string `Tensor`. The string to convert
+
+    Returns: `2-D` string `SparseTensor`. The string are split to list of chars.
+    """
+    return tf.string_split(string, delimiter='')
+
+
+def string2indices(s, dic=DICT):
+    """ map the char values in `s` to numeric int64 indices
+    For example:
+        [ 'a', 'b', 'c'] -> [ 0, 1, 2]
+
+    Args:
+        s: Tensor or SparseTensor.
+
+    Returns: The same type of input. the Dtype is `tf.int64`
+
+    """
+    string2index_table = tf.contrib.lookup.index_table_from_tensor(
+        dic, num_oov_buckets=1, default_value=-1)
+    return string2index_table.lookup(s)
